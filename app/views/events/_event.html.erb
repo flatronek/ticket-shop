@@ -1,0 +1,47 @@
+<p>
+  <strong>Artist:</strong>
+  <%= event.artist %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= event.description %>
+</p>
+
+<p>
+  <strong>Lowest price:</strong>
+  <%= event.price_low %>
+</p>
+
+<p>
+  <strong>Highest price:</strong>
+  <%= event.price_high %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= event.event_date %>
+</p>
+
+<p>
+  <strong>Date:</strong>
+  <%= event.event_date %>
+</p>
+
+<p>
+  <strong>Available seats:</strong>
+  <%= get_available_seats(event) %>
+</p>
+
+<p>
+  <strong>Total seats:</strong>
+  <%= event.total_seats %>
+</p>
+
+<% if event.adults_only? %>
+    <p>
+      <strong>Adults only!</strong>
+    </p>
+<% end %>
+
+

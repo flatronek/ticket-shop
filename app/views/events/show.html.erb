@@ -1,28 +1,24 @@
-<p id="notice"><%= notice %></p>
+<div class="container">
+  <h2 class="h2">Event</h2>
 
-<p>
-  <strong>Artist:</strong>
-  <%= @event.artist %>
-</p>
+  <%= render "event", event: @event %>
 
-<p>
-  <strong>Description:</strong>
-  <%= @event.description %>
-</p>
+  <br/>
 
-<p>
-  <strong>Lowest price:</strong>
-  <%= @event.price_low %>
-</p>
+  <% if user_signed_in? && has_available_seats %>
+      <%= button_to 'Buy ticket', new_event_ticket_path(@event), :method => :get, :class => "btn btn-primary" %>
+  <% elsif has_available_seats %>
+      <div class="alert alert-warning">Please login first if you wish to purchase a ticket.</div>
+  <% else %>
+      <div class="alert alert-danger">There are no available seats left.</div>
+  <% end %>
 
-<p>
-  <strong>Highest price:</strong>
-  <%= @event.price_high %>
-</p>
+  <h2 class="h2">Current tickets</h2>
 
-<p>
-  <strong>Date:</strong>
-  <%= @event.event_date %>
-</p>
+  <%= render "tickets/ticket_list", tickets: @event.tickets %>
 
-<%= link_to 'Back', events_path %>
+  <hr/>
+
+  <%= button_to 'Back', events_path, :method => :get, :class => "btn" %>
+
+</div>

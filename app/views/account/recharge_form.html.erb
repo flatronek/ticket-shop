@@ -1,0 +1,8 @@
+<%= form_tag do %>
+    <div class="form-group">
+      <%= label_tag(:amount, "Recharge") %>
+      <%= text_field_tag(:amount, '', {:class => 'form-control'}) %>
+    </div>
+
+    <%= submit_tag "Recharge", :class => 'btn btn-primary' %>
+<% end %>

@@ -1,0 +1,41 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th>Name</th>
+    <th>Seat</th>
+    <th>Address</th>
+    <th>Price</th>
+    <th>Email</th>
+    <th>Phone</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% tickets.each do |ticket| %>
+      <tr>
+        <td><%= ticket.name %></td>
+        <td><%= ticket.seat_id %></td>
+        <td><%= ticket.address %></td>
+        <td><%= ticket.price %></td>
+        <td><%= ticket.email %></td>
+        <td><%= ticket.phone %></td>
+        <td><%= button_to 'Show', ticket, :method => :get, :class => "btn btn-primary" %></td>
+
+        <% if ticket.user == current_user %>
+            <% if ticket.pending_return? %>
+                <td>
+                  <button class="btn" disabled>Pending...</button>
+                </td>
+            <% else %>
+                <td><%= button_to 'Return', ticket_return_path(ticket), :method => :post, :class => "btn btn-warning" %></td>
+            <% end %>
+        <% end %>
+
+        <% if user_signed_in? && current_user.admin? && ticket.pending_return? %>
+            <td><%= button_to 'Accept return', ticket_path(ticket), :method => :delete, :class => "btn btn-warning" %></td>
+        <% end %>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

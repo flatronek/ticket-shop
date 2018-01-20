@@ -1,8 +1,14 @@
 class EventsController < ApplicationController
-  before_action :check_logged_in, :only => [:new, :create]
+  before_action :authenticate_user!, :except => [:index, :show]
+  before_action :is_admin, :except => [:index, :show]
+  before_action :set_event, :only => [:edit, :update, :show]
 
   def index
-    @events = Event.all
+    if is_admin
+      @events = Event.all
+    else
+      @events = Event.where(event_date: Date.today..(Date.today + 30.days))
+    end
   end
 
   def new
@@ -19,18 +25,26 @@ class EventsController < ApplicationController
     end
   end
 
+  def update
+    if @event.update(event_params)
+      redirect_to @event, notice: 'Event was successfully updated.'
+    else
+      render :edit
+    end
+  end
+
+  def edit
+  end
+
   def show
-    @event = Event.find(params[:id])
   end
 
   private
-    def event_params
-      params.require(:event).permit(:artist, :description, :price_low, :price_high, :event_date)
-    end
+  def set_event
+    @event = Event.find(params[:id])
+  end
 
-    def check_logged_in
-      authenticate_or_request_with_http_basic('Ads') do |username, password|
-        username == 'admin' && password == 'admin'
-      end
-    end
+  def event_params
+    params.require(:event).permit(:artist, :description, :price_low, :price_high, :event_date, :total_seats, :adults_only)
+  end
 end
